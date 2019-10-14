@@ -29,7 +29,6 @@ class MainPresenter(private val view: MainView) : BaseConfig() {
                         val listHour = list?.filter {
                             it.dtTxt?.formatTanggal() == dateNow.formatTanggal()
                         }
-
                         view.onSuccessHour(listHour)
                     }
 

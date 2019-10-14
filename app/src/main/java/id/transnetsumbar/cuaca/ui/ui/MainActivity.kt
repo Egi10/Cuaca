@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import id.transnetsumbar.cuaca.R
 import id.transnetsumbar.cuaca.network.model.City
 import id.transnetsumbar.cuaca.network.model.ListItem
+import id.transnetsumbar.cuaca.ui.adapter.ListDayAdapter
 import id.transnetsumbar.cuaca.ui.adapter.ListHourAdapter
 import id.transnetsumbar.cuaca.untils.formatTanggal
 import kotlinx.android.synthetic.main.activity_main.*
@@ -14,7 +15,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), MainView {
     private lateinit var mainPresenter: MainPresenter
     private var listHour: MutableList<ListItem> = mutableListOf()
+    private var listDay: MutableList<ListItem> = mutableListOf()
     private lateinit var listHourAdapter: ListHourAdapter
+    private lateinit var listDayAdapter: ListDayAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,10 @@ class MainActivity : AppCompatActivity(), MainView {
         listHourAdapter = ListHourAdapter(listHour)
         rvCuacaHour.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvCuacaHour.adapter = listHourAdapter
+
+        listDayAdapter = ListDayAdapter(listDay)
+        rvCuacaDay.layoutManager = LinearLayoutManager(this)
+        rvCuacaDay.adapter = listDayAdapter
     }
 
     override fun onSuccess(list: List<ListItem>?, city: City?) {
@@ -63,6 +70,12 @@ class MainActivity : AppCompatActivity(), MainView {
                 }
             }
         }
+
+        listDay.clear()
+        list?.let {
+            listDay.addAll(it)
+        }
+        listDayAdapter.notifyDataSetChanged()
     }
 
     override fun onSuccessHour(list: List<ListItem>?) {

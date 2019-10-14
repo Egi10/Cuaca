@@ -115,6 +115,8 @@
                 android:id="@+id/rvCuacaDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:clipToPadding="false"
                 app:layout_constraintTop_toBottomOf="@id/view" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
