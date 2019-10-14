@@ -1,4 +1,4 @@
-package id.transnetsumbar.myapplication
+package id.transnetsumbar.cuaca
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

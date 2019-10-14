@@ -1,4 +1,4 @@
-package id.transnetsumbar.myapplication
+package id.transnetsumbar.cuaca
 
 import org.junit.Test
 
