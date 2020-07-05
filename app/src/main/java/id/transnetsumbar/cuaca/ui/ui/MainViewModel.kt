@@ -10,6 +10,7 @@ import id.transnetsumbar.cuaca.repository.MainRepository
 import id.transnetsumbar.cuaca.untils.formatTanggal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,7 +44,9 @@ class MainViewModel @ViewModelInject constructor(
         _state.value = true
         viewModelScope.launch(Dispatchers.Main) {
             try {
-                val config = repository.getWeather(id, appId, units)
+                val config = withContext(Dispatchers.IO) {
+                    repository.getWeather(id, appId, units)
+                }
 
                 when(config.code()) {
                     200 -> {
