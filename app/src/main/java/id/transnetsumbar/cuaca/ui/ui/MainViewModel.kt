@@ -8,9 +8,7 @@ import androidx.lifecycle.viewModelScope
 import id.transnetsumbar.cuaca.network.model.ListItem
 import id.transnetsumbar.cuaca.repository.MainRepository
 import id.transnetsumbar.cuaca.untils.formatTanggal
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -37,23 +35,25 @@ class MainViewModel @ViewModelInject constructor(
     val thePlace: LiveData<String> get() = _thePlace
 
     init {
-        getWeather("1642907", "03207a5afa25a1f6db2d2fcc6dd63fc1", "metric")
+        getWeather()
     }
 
-    private fun getWeather(id: String?, appId: String?, units: String?) {
+    private fun getWeather() {
         _state.value = true
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch {
             try {
-                val config = withContext(Dispatchers.IO) {
-                    repository.getWeather(id, appId, units)
-                }
+                val response = repository.getWeather(
+                    id = "1642907",
+                    appId = "03207a5afa25a1f6db2d2fcc6dd63fc1",
+                    units = "metric"
+                )
 
-                when(config.code()) {
+                when(response.code()) {
                     200 -> {
-                        val list = config.body()?.list
+                        val list = response.body()?.list
                         _item.postValue(list)
 
-                        _thePlace.postValue(config.body()?.city?.name)
+                        _thePlace.postValue(response.body()?.city?.name)
 
                         val date = Date()
                         val formatter = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
@@ -66,7 +66,7 @@ class MainViewModel @ViewModelInject constructor(
                     }
 
                     else -> {
-                        _error.postValue(config.message())
+                        _error.postValue(response.message())
                     }
                 }
                 _state.value = false
